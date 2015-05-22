@@ -1,0 +1,24 @@
+# See the Twitter API docs for details on potential stream parameters.
+# Note thate many of the options presented in the docs are for User streams, and this application only uses the
+# public API sample stream. Relevant default options are shown here. Please note that the only tested
+# parameter at this time is language.
+# https://dev.twitter.com/streaming/overview/request-parameters
+twitter_stream_parameters:
+  language: en
+  track:
+  follow:
+  locations:
+  replies:  # put 'all' here to also see reply Tweets
+
+# Settings specific to this program
+program_settings:
+  read_seconds: 300 # number of seconds to connect to the Twitter sample stream and download data
+  save_file: streams/stream.txt
+  report_file: streams/report.csv
+  console_output: true  # set to true if you want to see the Tweets on the screen
+  skip_words: and or the me of RT I I'm _ if it to in I've my your on with be but a you is for that don't what \
+      about are has just when all by this at can was amp so we as do get have not from out
+  report_top: 10
+
+
+
