@@ -88,7 +88,7 @@ module AvantTwitter
       if report_lines.count > 0
         puts "\n\nTop #{report_lines.last[:place]} Occuring Words"
         puts "+-------+----------------------------------------+-------------+"
-        puts "| Place | Word or Hashtag                        + Occurrences +"
+        puts "| Place | Word or Hashtag                        | Occurrences |"
         puts "+-------+----------------------------------------+-------------+"
         report_lines.each do |line|
           puts "|#{line[:place].to_s.rjust(6)} | #{line[:word].ljust(39)}|#{line[:count].to_s.rjust(12)} |"

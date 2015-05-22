@@ -57,7 +57,7 @@ Therefore, the "top 10" list can have more than 10 words if you get several ties
 
     Top 10 Occuring Words
     +-------+----------------------------------------+-------------+
-    | Place | Word or Hashtag                        + Occurrences +
+    | Place | Word or Hashtag                        | Occurrences |
     +-------+----------------------------------------+-------------+
     |     1 | love                                   |         212 |
     |     2 | like                                   |         195 |
@@ -104,14 +104,13 @@ There may be a few outlier string phrases that aren't really words which can sli
 be infrequent and are unlikely to appear in the "top 10" list of words. The filtering could be improved as these outliers
 are found and analyzed. 
 
-Some of the troublesome outliers that have not yet been fixed include HTML entities like &amp; and $gt;, words enclosed 
+Some of the troublesome outliers that have not yet been fixed include HTML entities like ```&amp;``` and ```$gt;```, words enclosed 
 by quotes, and some hyphenated words.
 
 ### What counts as a word?
 
 Numbers, URLs, usernames, "RT" (retweet flags), and emoji do not count as words. Hashtags count as words. All punctuation
-is filtered. "Stop words" are filtered out, and this filter can be changed via the ```settings.yml``` file via the 
-"skip_words" setting.
+is filtered.
 
 ### Stop Word Filtering
 
