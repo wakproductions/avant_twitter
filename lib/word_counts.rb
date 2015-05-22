@@ -10,6 +10,7 @@ module AvantTwitter
       tweet = tweet.downcase  # It's easier to format our report if we present every word in lower case.
       tweet = strip_emoji(tweet)
       tweet = strip_urls(tweet)
+      tweet = strip_html_entities(tweet)
       tweet = strip_usernames(tweet)
       tweet = strip_numbers(tweet)
 
@@ -86,6 +87,10 @@ module AvantTwitter
 
     def strip_urls(text)
       text.gsub /https?:\/\/.*?($|\s)/, ''
+    end
+
+    def strip_html_entities(text)
+      text.gsub /&[A-Za-z0-9]+;/, ''
     end
 
     def strip_usernames(text)

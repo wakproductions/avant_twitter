@@ -104,8 +104,15 @@ There may be a few outlier string phrases that aren't really words which can sli
 be infrequent and are unlikely to appear in the "top 10" list of words. The filtering could be improved as these outliers
 are found and analyzed. 
 
-Some of the troublesome outliers that have not yet been fixed include HTML entities like ```&amp;``` and ```$gt;```, words enclosed 
-by quotes, and some hyphenated words.
+Some of the troublesome outliers that have not yet been fixed include words enclosed by quotes and some hyphenated words.
+
+### Retweets
+
+The spec does not say whether Retweets should be ignored. This implementation currently includes Retweets, but removes
+the "RT" flag designating a Tweet as a Retweet. Retweets can throw off the data by double counting words. A popular 
+Tweet that gets Retweeted many times can certainly skew the count of certain words. But depending on what we are trying
+to do with this application, that behavior may or may not be desired. A setting could easily be created that decides
+whether or not to filter Retweets based on the presence of "RT" in the Tweet text.
 
 ### What counts as a word?
 
