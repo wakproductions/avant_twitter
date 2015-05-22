@@ -121,4 +121,9 @@ is filtered.
 
 ### Stop Word Filtering
 
-In ```settings.yml``` there is a "skip_words" line where you can build a dictionary of words you want ignored. 
+In ```settings.yml``` there is a "skip_words" line where you can build a dictionary of words you want ignored.
+ 
+### Hashtags Report
+
+In ```settings.yml``` setting ```report_hashtags``` to true will generate an additional hashtags report. (I just found
+this to be more interesting metadata.)

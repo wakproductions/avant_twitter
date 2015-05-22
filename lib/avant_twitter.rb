@@ -31,7 +31,8 @@ module AvantTwitter
           save_file: program_settings['save_file'],
           console_output: program_settings['console_output'],
           skip_words: program_settings['skip_words'].downcase.split, # convert to downcase for easier comparison
-          report_top: program_settings['report_top'] || 10
+          report_top: program_settings['report_top'] || 10,
+          report_hashtags: program_settings['report_hashtags']
       }
 
       @stream_parameters = {
@@ -45,11 +46,16 @@ module AvantTwitter
     alias_method :reload_settings, :load_settings
 
     def process_stream
+      read_twitter_sample_stream
+      sort_words!
+      save_word_counts(File.join(root_dir, @settings[:report_file])) if !@settings[:report_file].nil?
+    end
+
+    def read_twitter_sample_stream
       puts "Reading stream for #{@settings[:seconds]} seconds..."
       stop_time = Time.now + @settings[:seconds]
 
       open_save_file_stream if @settings[:save_file]
-
       begin
         @words_hash = Hash.new
         @twitter.sample(stream_parameters) do |object|
@@ -72,33 +78,42 @@ module AvantTwitter
       end
 
       puts "\n\nDone reading Twitter stream\n\n"
-
-      sort_words!
-      save_word_counts(File.join(root_dir, @settings[:report_file])) if !@settings[:report_file].nil?
     end
 
     def present_report
-      print_report_output(top_x(@settings[:report_top]), total_words)
+      print_top_x_report("Word", top_x(@settings[:report_top]))
+      print_total_words_report(total_words)
+
+      if @settings[:report_hashtags]
+        # Filter for only the hashtags
+        top_x_hashtags = top_x(@settings[:report_top]) do |word_count_hash|
+          word_count_hash.select { |word,count| word.to_s[0] == '#' && word.length > 1 }
+        end
+        print_top_x_report("Hashtag", top_x_hashtags)
+      end
     end
 
     # If you notice, this method I consider to be "view" related and therefore don't make any calls to other
     # methods in the class. i.e. this method stands alone needing only its parameters and can easily be refactored
     # into a separate module. But I don't think such refactoring is necessary at this time.
-    def print_report_output(report_lines, total_count)
+    def print_top_x_report(report_subject, report_lines)
       if report_lines.count > 0
-        puts "\n\nTop #{report_lines.last[:place]} Occuring Words"
+        puts "\n\nTop #{report_lines.last[:place]} #{report_subject}s by Occurence"
         puts "+-------+----------------------------------------+-------------+"
-        puts "| Place | Word or Hashtag                        | Occurrences |"
+        puts "| Place | #{report_subject.ljust(39)}| Occurrences |"
         puts "+-------+----------------------------------------+-------------+"
         report_lines.each do |line|
           puts "|#{line[:place].to_s.rjust(6)} | #{line[:word].ljust(39)}|#{line[:count].to_s.rjust(12)} |"
         end
         puts "+-------+----------------------------------------+-------------+"
 
-        puts "Total number of words analyzed: #{total_count}"
       else
         puts "No word counts recorded."
       end
+    end
+
+    def print_total_words_report(total_word_count)
+      puts "Total number of words analyzed: #{total_word_count}"
     end
 
     private

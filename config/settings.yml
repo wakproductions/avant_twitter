@@ -16,6 +16,7 @@ program_settings:
   save_file: streams/stream.txt
   report_file: streams/report.csv
   report_top: 10
+  report_hashtags: false
   console_output: true  # set to true if you want to see the Tweets on the screen
 
   # Many of the skip_words are suggestions from www.ranks.nl/stopwords

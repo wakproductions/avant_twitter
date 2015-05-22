@@ -54,15 +54,21 @@ module AvantTwitter
     end
 
     # sort_words! must be called prior to calling this in order for this to be accurate
-    def top_x(number)
-      number = [number, @word_counts.values.uniq.count].min
-      top_values = @word_counts.values.uniq[0..number-1]
+    def top_x(number, &before_filter)
+      if before_filter
+        word_counts = yield(@word_counts)
+      else
+        word_counts = @word_counts
+      end
+
+      number = [number, word_counts.values.uniq.count].min
+      top_values = word_counts.values.uniq[0..number-1]
 
       # When getting the top 10 words by occurrence, we might have some ties in which two different words both occur
       # the same number times. On a top 10 list you would want to list both words.
       result = Array.new
       top_values.each_with_index do |top_x_value, index|
-        @word_counts.select { |word,count| count == top_x_value }.each do |word, count|
+        word_counts.select { |word,count| count == top_x_value }.each do |word, count|
           result << {
               place: index+1,
               word: word.to_s,
