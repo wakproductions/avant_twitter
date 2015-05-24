@@ -57,14 +57,13 @@ module AvantTwitter
 
       open_save_file_stream if @settings[:save_file]
       begin
-        @words_hash = Hash.new
         @twitter.sample(stream_parameters) do |object|
           case object
             when Twitter::Tweet
               puts object.text if @settings[:console_output]
               @save_file_stream.write(object.text+"\n") if @settings[:save_file]
-
               process_words(object.text)
+
             when Twitter::Streaming::StallWarning
               puts object.message
               @save_file_stream.write(object.message+"\n") if @settings[:save_file]
